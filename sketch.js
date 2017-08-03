@@ -1,21 +1,22 @@
-var clouds,
-    pointer;
+var clouds;
 
 //Setup is called by p5 once
 function setup() {
   createCanvas(800, 400);
-  //
   //Based on examples from Allison Parish
   //http://creative-coding.decontextualize.com/making-games-with-p5-play/
-  clouds = new Group();
+  clouds = [];
   for(var i=0; i<10; i++) {
-    var c = createSprite(
-        random(width), random(height),
-        random(25, 100), random(25, 100));
-    c.shapeColor = color(random(200, 255));
-    clouds.add(c);
+    var c = {
+      x: random(width),
+      y: random(height),
+      width: random(25, 100),
+      height: random(25, 100),
+      color: color(random(200, 255))
+    }
+
+    clouds.push(c);
   }
-  
 }
 
 //Draw is called by p5 each frame
@@ -25,10 +26,11 @@ function draw() {
   fill(255, 255, 0); //yellow
   ellipse(0, 0, 90);
   for(cloud of clouds) {
-    cloud.position.x += (cloud.width / 2) * 0.01;
-    if(cloud.position.x > width) { cloud.position.x = 0; }
+    cloud.x += (cloud.width / 2) * 0.01;
+    if(cloud.x > width) { cloud.x = 0; }
+    fill(cloud.color);
+    rect(cloud.x, cloud.y, cloud.width, cloud.height);
   }
-  drawSprites();
 
   fill(0, 128, 0); //green
   rect(0, height - 100, width, 100); //upper left x, y, width, height
