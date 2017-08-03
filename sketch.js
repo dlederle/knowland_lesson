@@ -1,20 +1,38 @@
+var clouds,
+    pointer;
 
 //Setup is called by p5 once
 function setup() {
   createCanvas(800, 400);
+  //
+  //Based on examples from Allison Parish
+  //http://creative-coding.decontextualize.com/making-games-with-p5-play/
+  clouds = new Group();
+  for(var i=0; i<10; i++) {
+    var c = createSprite(
+        random(width), random(height),
+        random(25, 100), random(25, 100));
+    c.shapeColor = color(random(200, 255));
+    clouds.add(c);
+  }
+  
 }
 
 //Draw is called by p5 each frame
 function draw() {
-  //noLoop stops the normal draw cycle after one frame
-  noLoop();
+  noStroke();
   background(135, 206, 250); //light blue
-  strokeWeight(0);
+  fill(255, 255, 0); //yellow
+  ellipse(0, 0, 90);
+  for(cloud of clouds) {
+    cloud.position.x += (cloud.width / 2) * 0.01;
+    if(cloud.position.x > width) { cloud.position.x = 0; }
+  }
+  drawSprites();
+
   fill(0, 128, 0); //green
   rect(0, height - 100, width, 100); //upper left x, y, width, height
   drawHouse((width / 3), height - 230, 150);
-  fill(255, 255, 0); //yellow
-  ellipse(0, 0, 90);
 }
 
 function drawHouse(x, y, size) {
