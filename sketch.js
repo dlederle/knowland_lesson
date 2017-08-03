@@ -15,7 +15,8 @@ function setup() {
     c.shapeColor = color(random(200, 255));
     clouds.add(c);
   }
-  
+  pointer = createSprite(mouseX, mouseY, 15, 15);
+  pointer.immovable = true;
 }
 
 //Draw is called by p5 each frame
@@ -25,9 +26,16 @@ function draw() {
   fill(255, 255, 0); //yellow
   ellipse(0, 0, 90);
   for(cloud of clouds) {
+    pointer.collide(cloud, function(ptr, cld) {
+      if(mouseIsPressed) {
+        cloud.remove();
+      }
+    });
     cloud.position.x += (cloud.width / 2) * 0.01;
     if(cloud.position.x > width) { cloud.position.x = 0; }
   }
+  pointer.velocity.x = (mouseX-pointer.position.x) / 10;
+  pointer.velocity.y = (mouseY-pointer.position.y) / 10;
   drawSprites();
 
   fill(0, 128, 0); //green
